@@ -182,7 +182,7 @@
 dectobin(n);
 
 return 0;</code></pre><p>}</p>
-<p>void dectobin( int n )<br>{<br>    if (n == 0 || n == 1)<br>    {<br>        printf(“%d”, n);<br>    }<br>    else<br>    {<br>        dectobin(n / 2);  //类似于十进制数，/10 和 %10，分别把一个n位数分成前n-1位和最后1位，<br>        dectobin(n % 2);  //最后一位数，在十进制中，对10取模就是它本身，同样，二进制下，最后一位数，<br>    }                     //对2取模就是它本身。然后对前n-1位数继续调用函数<br>}</p>
+<p>void dectobin( int n )<br>{<br>    if (n == 0 || n == 1)<br>    {<br>        printf(“%d”, n);<br>    }<br>    else<br>    {<br>        dectobin(n / 2);<br>        printf(“%d”, n % 2); // dectobin(n % 2);<br>    }<br>}<br>// 类似于十进制数，/10 和 %10，这两个操作分别把一个n位数分成前n-1位和最后1位，<br>// 最后一位数，在十进制中，对10取模就是它本身，同样，二进制下，最后一位数，<br>// 对2取模就是它本身。然后对前n-1位数继续调用函数   </p>
 <p>// 输入样例：<br>// 10</p>
 <p>// 输出样例：<br>// 1010</p>
 <hr>
