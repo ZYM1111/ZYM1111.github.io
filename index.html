@@ -152,6 +152,77 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JosephusProblem" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/14/JosephusProblem/">JosephusProblem</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/14/JosephusProblem/" class="archive-article-date">
+  	<time datetime="2020-04-14T05:21:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>// 7-34 猴子选大王 (20分)<br>// Josephus_problem 约瑟夫环问题<br>// 一群猴子要选新猴王。新猴王的选择方法是：让N只候选猴子围成一圈，从某位置起顺序编号为1~N号。从第1号开始报数，每轮从1报到3，凡报到3的猴子即退出圈子，接着又从紧邻的下一只猴子开始同样的报数。如此不断循环，最后剩下的一只猴子就选为猴王。请问是原来第几号猴子当选猴王？</p>
+<p>// 输入格式：<br>// 输入在一行中给一个正整数N（≤1000）。</p>
+<p>// 输出格式：<br>// 在一行中输出当选猴王的编号。</p>
+<p>// 输入样例：<br>// 11</p>
+<p>// 输出样例：<br>// 7</p>
+<p>// 开始时把所有的值状态标记为1，代表这个人在循环的队列中。我们可以不断地遍历这n个值，每当遇到在队列中的人时，<br>// 计数器num++（这个计数器num只在遇到status[i]==1时自增），当num==m时，这个人出列，计数器清0，<br>// 状态标记为0（代表这个人出列了，不在循环的队列中），同时用来记录出列人数的count++。当count==n时，n个人已经全部出列，<br>// 可以退出for和while了。<br>// ————————————————<br>// 版权声明：本文为CSDN博主「doubleguy」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。<br>// 原文链接：<a href="https://blog.csdn.net/doubleguy/java/article/details/84073090" target="_blank" rel="noopener">https://blog.csdn.net/doubleguy/java/article/details/84073090</a>  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMBER 3  <span class="comment">// 从1报数到NUMBER</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, outN = <span class="number">0</span>, cnt = <span class="number">0</span>; <span class="comment">// outN是出列的人数  cnt是报数的数字(从1-NUMBER循环)</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">    <span class="keyword">int</span> *a = <span class="number">0</span>;</span><br><span class="line">    a = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        a[i] = <span class="number">1</span>;  <span class="comment">// 状态:1为在队列中  0为不在队列中</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (outN != n - <span class="number">1</span>) <span class="comment">// 直到队列中只剩一人</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[i] == <span class="number">1</span>)  <span class="comment">// 状态为1才报数</span></span><br><span class="line">            &#123;</span><br><span class="line">                cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (cnt == NUMBER)  <span class="comment">// 报数到NUMBER就退出一个人  同时cnt归零  outN人数加一</span></span><br><span class="line">            &#123;</span><br><span class="line">                a[i] = cnt = <span class="number">0</span>;</span><br><span class="line">                outN++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (outN == n - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i] == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d"</span>, i + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>// 变题:从第k个人开始报数<br>// 方法:设置flag, 第一次遍历数组时从i == k-1时开始计数, 之后的遍历还是从0-n-1  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMBER 3</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, outN = <span class="number">0</span>, cnt = <span class="number">0</span>, flag = <span class="number">0</span>, k;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;n, &amp;k);</span><br><span class="line">    <span class="keyword">int</span> *a = <span class="number">0</span>;</span><br><span class="line">    a = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        a[i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (outN != n - <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == k - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (flag == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (a[i] == <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (cnt == NUMBER)</span><br><span class="line">            &#123;</span><br><span class="line">                a[i] = cnt = <span class="number">0</span>;</span><br><span class="line">                outN++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (outN == n - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i] == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d"</span>, i + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/14/JosephusProblem/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-image-of-words" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -688,19 +759,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="dectobin"><a href="#dectobin" class="headerlink" title="dectobin"></a>dectobin</h2><p>// 本题要求实现一个函数，将正整数n转换为二进制后输出。</p>
-<p>// 函数接口定义：<br>// void dectobin( int n );</p>
-<p>// 函数dectobin应在一行中打印出二进制的n。建议用递归实现。</p>
-<p>// 裁判测试程序样例：<br>#include &lt;stdio.h&gt;</p>
-<p>void dectobin( int n );</p>
-<p>int main()<br>{<br>    int n;</p>
-<pre><code>scanf(&quot;%d&quot;, &amp;n);
-dectobin(n);
-
-return 0;</code></pre><p>}</p>
-<p>void dectobin( int n )<br>{<br>    if (n == 0 || n == 1)<br>    {<br>        printf(“%d”, n);<br>    }<br>    else<br>    {<br>        dectobin(n / 2);<br>        printf(“%d”, n % 2); // dectobin(n % 2);<br>    }<br>}<br>// 类似于十进制数，/10 和 %10，这两个操作分别把一个n位数分成前n-1位和最后1位，<br>// 最后一位数，在十进制中，对10取模就是它本身，同样，二进制下，最后一位数，<br>// 对2取模就是它本身。然后对前n-1位数继续调用函数   </p>
-<p>// 输入样例：<br>// 10</p>
-<p>// 输出样例：<br>// 1010</p>
+        <h2 id="dectobin"><a href="#dectobin" class="headerlink" title="dectobin"></a>dectobin</h2><p>// 本题要求实现一个函数，将正整数n转换为二进制后输出。<br>// 函数接口定义：<br>// void dectobin( int n );<br>// 函数dectobin应在一行中打印出二进制的n。<br>// 建议用递归实现。<br>// 输入样例：<br>// 10<br>// 输出样例：<br>// 1010</p>
+<p>// 裁判测试程序样例：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dectobin</span><span class="params">( <span class="keyword">int</span> n )</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">    dectobin(n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">dectobin</span><span class="params">( <span class="keyword">int</span> n )</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">0</span> || n == <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, n);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        dectobin(n / <span class="number">2</span>);  </span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%d"</span>, n % <span class="number">2</span>); <span class="comment">// dectobin(n % 2);  </span></span><br><span class="line">    &#125;                     </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>// 类似于十进制数，/10 和 %10，这两个操作分别把一个n位数分成前n-1位和最后1位，<br>// 最后一位数，在十进制中，对10取模就是它本身，同样，二进制下，最后一位数<br>// 对2取模就是它本身。然后对前n-1位数继续调用函数   </p>
 <hr>
 
       
