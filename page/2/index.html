@@ -154,6 +154,657 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MaxSubseqSum" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/15/MaxSubseqSum/">MaxSubseqSum</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/15/MaxSubseqSum/" class="archive-article-date">
+  	<time datetime="2020-04-14T16:31:52.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="分而治之的分析"><a href="#分而治之的分析" class="headerlink" title="分而治之的分析"></a>分而治之的分析</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Max3</span><span class="params">( <span class="keyword">int</span> A, <span class="keyword">int</span> B, <span class="keyword">int</span> C )</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">/* 返回3个整数中的最大值 */</span></span><br><span class="line">    <span class="keyword">return</span> A &gt; B ? A &gt; C ? A : C : B &gt; C ? B : C;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">DivideAndConquer</span><span class="params">( <span class="keyword">int</span> List[], <span class="keyword">int</span> left, <span class="keyword">int</span> right )</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">/* 分治法求List[left]到List[right]的最大子列和 */</span></span><br><span class="line">    <span class="keyword">int</span> MaxLeftSum, MaxRightSum; <span class="comment">/* 存放左右子问题的解 */</span></span><br><span class="line">    <span class="keyword">int</span> MaxLeftBorderSum, MaxRightBorderSum; <span class="comment">/*存放跨分界线的结果*/</span></span><br><span class="line"> </span><br><span class="line">    <span class="keyword">int</span> LeftBorderSum, RightBorderSum;</span><br><span class="line">    <span class="keyword">int</span> center, i;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span>( left == right )  &#123; <span class="comment">/* 递归的终止条件，子列只有1个数字 */</span></span><br><span class="line">        <span class="keyword">if</span>( List[left] &gt; <span class="number">0</span> )  <span class="keyword">return</span> List[left];</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 下面是"分"的过程 */</span></span><br><span class="line">    center = ( left + right ) / <span class="number">2</span>; <span class="comment">/* 找到中分点 */</span></span><br><span class="line">    <span class="comment">/* 递归求得两边子列的最大和 */</span></span><br><span class="line">    MaxLeftSum = DivideAndConquer( List, left, center );</span><br><span class="line">    MaxRightSum = DivideAndConquer( List, center+<span class="number">1</span>, right );</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 下面求跨分界线的最大子列和 */</span></span><br><span class="line">    MaxLeftBorderSum = <span class="number">0</span>; LeftBorderSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>( i=center; i&gt;=left; i-- ) &#123; <span class="comment">/* 从中线向左扫描 */</span></span><br><span class="line">        LeftBorderSum += List[i];</span><br><span class="line">        <span class="keyword">if</span>( LeftBorderSum &gt; MaxLeftBorderSum )</span><br><span class="line">            MaxLeftBorderSum = LeftBorderSum;</span><br><span class="line">    &#125; <span class="comment">/* 左边扫描结束 */</span></span><br><span class="line"> </span><br><span class="line">    MaxRightBorderSum = <span class="number">0</span>; RightBorderSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>( i=center+<span class="number">1</span>; i&lt;=right; i++ ) &#123; <span class="comment">/* 从中线向右扫描 */</span></span><br><span class="line">        RightBorderSum += List[i];</span><br><span class="line">        <span class="keyword">if</span>( RightBorderSum &gt; MaxRightBorderSum )</span><br><span class="line">            MaxRightBorderSum = RightBorderSum;</span><br><span class="line">    &#125; <span class="comment">/* 右边扫描结束 */</span></span><br><span class="line"> </span><br><span class="line">    <span class="comment">/* 下面返回"治"的结果 */</span></span><br><span class="line">    <span class="keyword">return</span> Max3( MaxLeftSum, MaxRightSum, MaxLeftBorderSum + MaxRightBorderSum );</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum3</span><span class="params">( <span class="keyword">int</span> List[], <span class="keyword">int</span> N )</span></span></span><br><span class="line"><span class="function"></span>&#123; <span class="comment">/* 保持与前2种算法相同的函数接口 */</span></span><br><span class="line">    <span class="keyword">return</span> DivideAndConquer( List, <span class="number">0</span>, N<span class="number">-1</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="具体的四种算法-N-3-N-2-NlogN-N"><a href="#具体的四种算法-N-3-N-2-NlogN-N" class="headerlink" title="具体的四种算法(N^3 N^2 NlogN N)"></a>具体的四种算法(N^3 N^2 NlogN N)</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 01-复杂度1 最大子列和问题 (20分)</span></span><br><span class="line"><span class="comment">// 给定K个整数组成的序列</span></span><br><span class="line"><span class="comment">// “最大子列和”则被定义为所有连续子列元素的和中最大者。例如给定序列&#123; -2, 11, -4, 13, -5, -2 &#125;，其连续子列&#123; 11, -4, 13 &#125;有最大的和20。现要求你编写程序，计算给定整数序列的最大子列和。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 本题旨在测试各种不同的算法在各种数据情况下的表现。各组测试数据特点如下：</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 数据1：与样例等价，测试基本正确性；</span></span><br><span class="line"><span class="comment">// 数据2：102个随机整数；</span></span><br><span class="line"><span class="comment">// 数据3：103个随机整数；</span></span><br><span class="line"><span class="comment">// 数据4：104个随机整数；</span></span><br><span class="line"><span class="comment">// 数据5：105个随机整数；</span></span><br><span class="line"><span class="comment">// 输入格式:</span></span><br><span class="line"><span class="comment">// 输入第1行给出正整数K (≤100000)；第2行给出K个整数，其间以空格分隔。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出格式:</span></span><br><span class="line"><span class="comment">// 在一行中输出最大子列和。如果序列中所有整数皆为负数，则输出0。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输入样例:</span></span><br><span class="line"><span class="comment">// 6</span></span><br><span class="line"><span class="comment">// -2 11 -4 13 -5 -2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出样例:</span></span><br><span class="line"><span class="comment">// 20</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> MAXN 100000</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="keyword">long</span> <span class="title">MaxSum</span><span class="params">(<span class="keyword">int</span> * a, <span class="keyword">int</span> length)</span></span>; <span class="comment">// 我写的垃圾代码</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubSeqSum1</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum2</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum3</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum4</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">DivideAndConquer</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Max3</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> k, arr[MAXN] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;k);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; k; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;arr[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"%d"</span>, MaxSubseqSum4(arr, k));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum4</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ThisSum = <span class="number">0</span>, MaxSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ThisSum += <span class="built_in">list</span>[i];</span><br><span class="line">        <span class="keyword">if</span> (ThisSum &gt; MaxSum)</span><br><span class="line">        &#123;</span><br><span class="line">            MaxSum = ThisSum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (ThisSum &lt; <span class="number">0</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            ThisSum = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> MaxSum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Max3</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b, <span class="keyword">int</span> c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> c &gt; (a &gt; b ? a : b) ? c : (a &gt; b ? a : b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">DivideAndConquer</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> left, <span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> MaxRightSum, MaxLeftSum;</span><br><span class="line">    <span class="keyword">int</span> MaxLeftBorderSum, MaxRightBorderSum, LeftBorderSum, RightBorderSum;</span><br><span class="line">    <span class="keyword">int</span> center = (left + right) / <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">if</span> (left == right)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">list</span>[left] &gt; <span class="number">0</span> ? <span class="built_in">list</span>[left] : <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        MaxLeftSum = DivideAndConquer(<span class="built_in">list</span>, left, center);</span><br><span class="line">        MaxRightSum = DivideAndConquer(<span class="built_in">list</span>, center + <span class="number">1</span>, right);</span><br><span class="line"></span><br><span class="line">        MaxLeftBorderSum = LeftBorderSum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = center; i &gt;= left; i--)</span><br><span class="line">        &#123;</span><br><span class="line">            LeftBorderSum += <span class="built_in">list</span>[i];</span><br><span class="line">            <span class="keyword">if</span> (MaxLeftBorderSum &lt; LeftBorderSum)</span><br><span class="line">            &#123;</span><br><span class="line">                MaxLeftBorderSum = LeftBorderSum;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        MaxRightBorderSum = RightBorderSum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = center + <span class="number">1</span>; i &lt;= right; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            RightBorderSum += <span class="built_in">list</span>[i];</span><br><span class="line">            <span class="keyword">if</span> (MaxRightBorderSum &lt; RightBorderSum)</span><br><span class="line">            &#123;</span><br><span class="line">                MaxRightBorderSum = RightBorderSum;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> Max3(MaxLeftBorderSum + MaxRightBorderSum, MaxLeftSum, MaxRightSum);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum3</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> DivideAndConquer(<span class="built_in">list</span>, <span class="number">0</span>, n - <span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubseqSum2</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ThisSum, MaxSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        ThisSum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; n; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            ThisSum += <span class="built_in">list</span>[j];</span><br><span class="line">            <span class="keyword">if</span> (ThisSum &gt; MaxSum)</span><br><span class="line">            &#123;</span><br><span class="line">                MaxSum = ThisSum;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> MaxSum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">MaxSubSeqSum1</span><span class="params">(<span class="keyword">int</span> <span class="built_in">list</span>[], <span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> ThisSum = <span class="number">0</span>, MaxSum = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &lt; n; j++)</span><br><span class="line">        &#123;</span><br><span class="line">            ThisSum = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = i; k &lt; j + <span class="number">1</span>; k++)</span><br><span class="line">            &#123;</span><br><span class="line">                ThisSum += <span class="built_in">list</span>[k];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (ThisSum &gt; MaxSum)</span><br><span class="line">            &#123;</span><br><span class="line">                MaxSum = ThisSum;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> MaxSum;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// long long MaxSum(int * arr, int length)</span></span><br><span class="line"><span class="comment">// &#123;</span></span><br><span class="line"><span class="comment">//     long long ret, lsum, rsum, temp_lsum, temp_rsum, tsum, MaxLeftBorderSum, MaxRightBorderSum;</span></span><br><span class="line"><span class="comment">//     MaxLeftBorderSum = MaxRightBorderSum = tsum = ret = lsum = rsum = temp_lsum = temp_rsum = 0;</span></span><br><span class="line"><span class="comment">//     // int * left = 0, * right = 0;</span></span><br><span class="line"><span class="comment">//     // left = (int *)malloc(length / 2 * sizeof(int));</span></span><br><span class="line"><span class="comment">//     // right = (int *)malloc( (length - length / 2) * sizeof(int) );</span></span><br><span class="line"><span class="comment">//     int left[length / 2];</span></span><br><span class="line"><span class="comment">//     int right[length - length / 2];</span></span><br><span class="line"><span class="comment">//     if (length == 1)</span></span><br><span class="line"><span class="comment">//     &#123;</span></span><br><span class="line"><span class="comment">//         return arr[0] &gt;= 0 ? arr[0] : 0;</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">//     else</span></span><br><span class="line"><span class="comment">//     &#123;</span></span><br><span class="line"><span class="comment">//         for (int i = 0; i &lt; length / 2; i++)</span></span><br><span class="line"><span class="comment">//         &#123;</span></span><br><span class="line"><span class="comment">//             left[i] = arr[i];</span></span><br><span class="line"><span class="comment">//         &#125;</span></span><br><span class="line"><span class="comment">//         for (int i = 0; i &lt; length - length / 2; i++)</span></span><br><span class="line"><span class="comment">//         &#123;</span></span><br><span class="line"><span class="comment">//             right[i] = arr[length / 2 + i];</span></span><br><span class="line"><span class="comment">//         &#125;</span></span><br><span class="line"><span class="comment">//         lsum = MaxSum(left, sizeof(left) / sizeof(left[0]));</span></span><br><span class="line"><span class="comment">//         rsum = MaxSum(right, sizeof(right) / sizeof(right[0]));</span></span><br><span class="line"><span class="comment">//         ret =  lsum &gt; rsum ? lsum : rsum;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//         for (int i = 0; i &lt; length - length / 2; i++)</span></span><br><span class="line"><span class="comment">//         &#123;</span></span><br><span class="line"><span class="comment">//             temp_rsum += right[i];</span></span><br><span class="line"><span class="comment">//             if (temp_rsum &gt; MaxRightBorderSum)</span></span><br><span class="line"><span class="comment">//             &#123;</span></span><br><span class="line"><span class="comment">//                 MaxRightBorderSum = temp_rsum;</span></span><br><span class="line"><span class="comment">//             &#125;</span></span><br><span class="line"><span class="comment">//         &#125;</span></span><br><span class="line"><span class="comment">//         for (int i = length / 2 - 1; i &gt;= 0; i--)</span></span><br><span class="line"><span class="comment">//         &#123;</span></span><br><span class="line"><span class="comment">//             temp_lsum += left[i];</span></span><br><span class="line"><span class="comment">//             if (temp_lsum &gt; MaxLeftBorderSum)</span></span><br><span class="line"><span class="comment">//             &#123;</span></span><br><span class="line"><span class="comment">//                 MaxLeftBorderSum = temp_lsum;</span></span><br><span class="line"><span class="comment">//             &#125;</span></span><br><span class="line"><span class="comment">//         &#125;</span></span><br><span class="line"><span class="comment">//         tsum = MaxLeftBorderSum + MaxRightBorderSum;</span></span><br><span class="line"><span class="comment">//         ret = ret &gt; tsum ? ret : tsum;</span></span><br><span class="line"><span class="comment">//         return ret;</span></span><br><span class="line"><span class="comment">//     &#125;</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/15/MaxSubseqSum/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JosephusProblem" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/14/JosephusProblem/">JosephusProblem</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/14/JosephusProblem/" class="archive-article-date">
+  	<time datetime="2020-04-14T05:21:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-14</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>// 7-34 猴子选大王 (20分)<br>// Josephus_problem 约瑟夫环问题<br>// 一群猴子要选新猴王。新猴王的选择方法是：让N只候选猴子围成一圈，从某位置起顺序编号为1~N号。从第1号开始报数，每轮从1报到3，凡报到3的猴子即退出圈子，接着又从紧邻的下一只猴子开始同样的报数。如此不断循环，最后剩下的一只猴子就选为猴王。请问是原来第几号猴子当选猴王？</p>
+<p>// 输入格式：<br>// 输入在一行中给一个正整数N（≤1000）。</p>
+<p>// 输出格式：<br>// 在一行中输出当选猴王的编号。</p>
+<p>// 输入样例：<br>// 11</p>
+<p>// 输出样例：<br>// 7</p>
+<p>// 开始时把所有的值状态标记为1，代表这个人在循环的队列中。我们可以不断地遍历这n个值，每当遇到在队列中的人时，<br>// 计数器num++（这个计数器num只在遇到status[i]==1时自增），当num==m时，这个人出列，计数器清0，<br>// 状态标记为0（代表这个人出列了，不在循环的队列中），同时用来记录出列人数的count++。当count==n时，n个人已经全部出列，<br>// 可以退出for和while了。<br>// ————————————————<br>// 版权声明：本文为CSDN博主「doubleguy」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。<br>// 原文链接：<a href="https://blog.csdn.net/doubleguy/java/article/details/84073090" target="_blank" rel="noopener">https://blog.csdn.net/doubleguy/java/article/details/84073090</a>  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMBER 3  <span class="comment">// 从1报数到NUMBER</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, outN = <span class="number">0</span>, cnt = <span class="number">0</span>; <span class="comment">// outN是出列的人数  cnt是报数的数字(从1-NUMBER循环)</span></span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n);</span><br><span class="line">    <span class="keyword">int</span> *a = <span class="number">0</span>;</span><br><span class="line">    a = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        a[i] = <span class="number">1</span>;  <span class="comment">// 状态:1为在队列中  0为不在队列中</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (outN != n - <span class="number">1</span>) <span class="comment">// 直到队列中只剩一人</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (a[i] == <span class="number">1</span>)  <span class="comment">// 状态为1才报数</span></span><br><span class="line">            &#123;</span><br><span class="line">                cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (cnt == NUMBER)  <span class="comment">// 报数到NUMBER就退出一个人  同时cnt归零  outN人数加一</span></span><br><span class="line">            &#123;</span><br><span class="line">                a[i] = cnt = <span class="number">0</span>;</span><br><span class="line">                outN++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (outN == n - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i] == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d"</span>, i + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>// 变题:从第k个人开始报数<br>// 方法:设置flag, 第一次遍历数组时从i == k-1时开始计数, 之后的遍历还是从0-n-1  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NUMBER 3</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> n, outN = <span class="number">0</span>, cnt = <span class="number">0</span>, flag = <span class="number">0</span>, k;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">"%d%d"</span>, &amp;n, &amp;k);</span><br><span class="line">    <span class="keyword">int</span> *a = <span class="number">0</span>;</span><br><span class="line">    a = (<span class="keyword">int</span> *)<span class="built_in">malloc</span>(n * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        a[i] = <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span> (outN != n - <span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span> (i == k - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                flag = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (flag == <span class="number">0</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (a[i] == <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                cnt++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (cnt == NUMBER)</span><br><span class="line">            &#123;</span><br><span class="line">                a[i] = cnt = <span class="number">0</span>;</span><br><span class="line">                outN++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (outN == n - <span class="number">1</span>)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span> (a[i] == <span class="number">1</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">"%d"</span>, i + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/14/JosephusProblem/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-image-of-words" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/10/image-of-words/">image of words</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/10/image-of-words/" class="archive-article-date">
+  	<time datetime="2020-04-10T12:20:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Metaphor-隐喻"><a href="#Metaphor-隐喻" class="headerlink" title="Metaphor(隐喻)"></a>Metaphor(隐喻)</h2><h3 id="Verb"><a href="#Verb" class="headerlink" title="Verb"></a>Verb</h3><ul>
+<li><p>lurch&amp;stuff</p>
+<ul>
+<li>lurch towards graduation, more stuffed with learning and short of money than they probably ever will be again.(饱读诗书却囊中羞涩)</li>
+</ul>
+</li>
+<li><p>marry</p>
+<ul>
+<li>We can have a future that provides for all the young of the present, by marrying common sense and compassion.</li>
+</ul>
+</li>
+<li><p>bubble up</p>
+<ul>
+<li>good ideas bubble up</li>
+</ul>
+</li>
+<li><p>flash&amp;radiate&amp;signal&amp;gulf</p>
+<ul>
+<li>She would flash a smile that radiated intelligence and quickened my heartbeat. It was a smile that signaled hope and made me temporarily forget the intellectual gulf that separated us.</li>
+</ul>
+</li>
+</ul>
+<h3 id="N1-of-N2"><a href="#N1-of-N2" class="headerlink" title="N1+of+N2"></a>N1+of+N2</h3><ul>
+<li><p>the mountain of despair&amp;a stone of hope&amp;a beautiful symphony of brotherhood</p>
+<ul>
+<li>With this faith we will be able to hew a stone of hope out of the mountain of despair. With this faith we will be able to transform the jangling discords of our nation into a beautiful symphony of brotherhood.</li>
+</ul>
+</li>
+<li><p>reservoir(水库)&amp;drought(匮乏)</p>
+<ul>
+<li>Some people still believe that Iran’s internal reservoir of compromise may be enough to save it from the drought of common sense.</li>
+</ul>
+</li>
+<li><p>navigate +a difficult situation(成功应付困难处境)</p>
+<ul>
+<li>navigate the currents of our present economic waters</li>
+</ul>
+</li>
+</ul>
+<h3 id="N-adjective-N"><a href="#N-adjective-N" class="headerlink" title="N(adjective)+N"></a>N(adjective)+N</h3><ul>
+<li><p>stumbling blocks(绊脚石)&amp;stepping stones(踏脚石)</p>
+<ul>
+<li>We must never tire or become frustrated by difficulties. We must transform stumbling blocks into stepping stones and march on with the determination that…</li>
+</ul>
+</li>
+</ul>
+<h3 id="V-N"><a href="#V-N" class="headerlink" title="V+N"></a>V+N</h3><ul>
+<li><p>weather +a difficult time(渡过难关)</p>
+<ul>
+<li>As a result of those measure we weathered the storm and moved on into calmer waters and a period of economic expansion and social reorganization(经历风雨后，开始经济发展、社会结构重组)</li>
+</ul>
+</li>
+<li><p>drink from the cup of bitterness and hatred(从痛苦和仇恨的杯子中饮水)</p>
+<ul>
+<li>Let us not seek to satisfy our thirst for freedom by drinking from the cup of bitterness and hatred.(不要从痛苦和仇恨的杯子中饮水以止自由之渴)</li>
+</ul>
+</li>
+<li><p>squeeze</p>
+<ul>
+<li>But squeezing the juice out of the concept(仔细思量), Playboy leaves us nothing much but the pulp(糨糊n.；形容作品粗制滥造adj.) of pleasure.</li>
+</ul>
+</li>
+</ul>
+<h3 id="分主题的隐喻"><a href="#分主题的隐喻" class="headerlink" title="分主题的隐喻"></a>分主题的隐喻</h3><ul>
+<li><p>water&amp;currents&amp;navigation</p>
+<ul>
+<li>It would simply mean that China would resume(恢复) its navigation of the uncharted(陌生的) waters of reforming a centrally planned economy——with all the hazards identified earlier.</li>
+</ul>
+</li>
+<li><p>flower&amp;plant&amp;soil</p>
+<ul>
+<li>Italy, which only a couple of years ago most people thought was on the edge of precipice(悬崖), has strolled back to (漫步回到) the meadow(牧场) of normality.</li>
+</ul>
+</li>
+<li><p>book&amp;chapter</p>
+<ul>
+<li>The reaction to the migration at that time was one of the darkest chapters of our history.</li>
+</ul>
+</li>
+<li><p>sunshine&amp;wind</p>
+<ul>
+<li>And yet, while most of us are only too ready to apply to others the cold wind of criticism. we are somehow reluctant to give our fellows the warm sunshine of praise.</li>
+</ul>
+</li>
+<li><p>road&amp;trail</p>
+<ul>
+<li>They can hardly imagine allowing the hand of God or chance to lead them down some unforeseen trail.</li>
+</ul>
+</li>
+<li><p>infant(N.A child; Adj.For infants and young children; incipient;)</p>
+<ul>
+<li>the technology is in its infancy</li>
+</ul>
+</li>
+<li><p>fire&amp;aglow</p>
+<ul>
+<li>The delay has set the embers(余烬) of neutralism aglow(发红) in Europe, to the point where smoke can now be seen curling up(袅袅升起) in Holland, Norway and West Germany. Time for him to reach for the fire extinguisher(灭火器).</li>
+</ul>
+</li>
+</ul>
+<h2 id="Simile-明喻"><a href="#Simile-明喻" class="headerlink" title="Simile(明喻)"></a>Simile(明喻)</h2><ul>
+<li><p>Time slips through your fingers like <strong>quicksand</strong>.</p>
+</li>
+<li><p>desire is like <strong>the leaves and flowers</strong> of delicate plants curling up and dying in the chill of autumn.</p>
+</li>
+<li><p>If you try to do so, you will find value as lasting as <strong>soap bubbles</strong> blown into the air.</p>
+</li>
+<li><p>Here knowledge of truth alone does not suffice(足够); on the contrary this knowledge must continually be renewed by ceaseless(无休止的) effort, if it is not to be lost. It resembles <strong>a statue of marble</strong> which stands in the desert and is continuously threatened with burial by the shifting sand.</p>
+</li>
+</ul>
+<h2 id="Metonymy-借代"><a href="#Metonymy-借代" class="headerlink" title="Metonymy(借代)"></a>Metonymy(借代)</h2><h3 id="ugly-duckling-丑小鸭：初似平庸后来出众的人或事物-amp-splendid-swan"><a href="#ugly-duckling-丑小鸭：初似平庸后来出众的人或事物-amp-splendid-swan" class="headerlink" title="ugly duckling(丑小鸭：初似平庸后来出众的人或事物)&amp;splendid swan"></a>ugly duckling(丑小鸭：初似平庸后来出众的人或事物)&amp;splendid swan</h3><ul>
+<li>Art transcends(超出通常界限) and therefore only time can determine artistic value. Censors(监察官), critics, and reviewers belong to a dangerous species: they can easily kill new art that they consider an ugly duckling, not knowing that in due time it might be a splendid swan.</li>
+</ul>
+<h3 id="身份词借代Identity-Words"><a href="#身份词借代Identity-Words" class="headerlink" title="身份词借代Identity Words"></a>身份词借代Identity Words</h3><ul>
+<li><p>consumer</p>
+<ul>
+<li>Being able to follow the reasoning of others makes you an informed consumer of those ideas.(从善如流使你能广泛吸收他人意见)</li>
+</ul>
+</li>
+<li><p>prisoner</p>
+<ul>
+<li>a prisoner of the present-day world(当今世界的凡人)</li>
+</ul>
+</li>
+<li><p>provider</p>
+<ul>
+<li>The husband was to be the provider who left the home and returned with its economic support; the wife was to devote herself to the care of her children.</li>
+</ul>
+</li>
+<li><p>pilot</p>
+<ul>
+<li>People with greater certainty about their emotions are better pilots of their lives.(越是对自己的情绪有把握的人，越擅长驾驭自己的生活)</li>
+</ul>
+</li>
+</ul>
+<p><em>XMind - Trial Version</em></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/10/image-of-words/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-EnglishWriting2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/09/EnglishWriting2/">EnglishWriting(2)</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/09/EnglishWriting2/" class="archive-article-date">
+  	<time datetime="2020-04-09T08:15:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Select-30-English-sentences-from-English-literary-works"><a href="#Select-30-English-sentences-from-English-literary-works" class="headerlink" title="Select 30 English sentences from English literary works."></a>Select 30 English sentences from English literary works.</h2><ol start="13">
+<li><p><em>The moon was now hidden by clouds, darkening the sky. On the horizon, lightning flashed, and a moment later a soft rain began to fall, pattering against the roof.</em></p>
+</li>
+<li><p><em>The oak trees lining the street, heavy with leaves, rustled in the breeze as thunder echoed through the house.</em>  </p>
+<blockquote>
+<p>月夜，风雨交加，两个主人公第一次独处</p>
+</blockquote>
+</li>
+<li><p><em>In all my life, I’d never been as sure of anything, and as much as I hoped to one day hear Savannah say these words to me, what mattered most was knowing that love was mine to give, without strings or expectations.</em></p>
+</li>
+<li><p><em>I drove my elbow hard into his solar plexus and heard a sudden groaning exhale; then I grabbed Randy’s hand and quickly twisted it to its snapping point.</em></p>
+</li>
+<li><p><em>I swung an elbow blindly and felt it connect; I felt cartilage crunch as I turned, ready for whoever came next.</em>  </p>
+<blockquote>
+<p>女主给了男主一本关于自闭症的书，男主误以为她对他父亲好是因为她在study他父亲，所以一时失去理智，伤害了两个无辜的人<br>但是更深层的原因是他害怕他父亲确实患有自闭症</p>
+</blockquote>
+</li>
+<li><p><em>Wherever you are and no matter what’s going on in your life, when it’s the first night of the full moon——like it was the first time we met——I want you to find it in the nighttime sky.</em>  </p>
+<blockquote>
+<p>“但愿人长久，千里共婵娟”</p>
+</blockquote>
+</li>
+<li><p><em>There are memories for both of us, of course, but I’ve learned that memories can have a physical, almost living presence, and in this, Savannah and I are different as well. If hers are stars in the nighttime sky, mine are the haunted empty spaces in between.</em>  </p>
+<blockquote>
+<p>18句（男主休假结束，踏上回归军队的旅程，读着Savannah的信）对比19句（六年后男主回到女主长大的小镇）</p>
+</blockquote>
+</li>
+<li><p><em>It was easy; those memories had already begun to haunt me and sometimes seemed more real than my life as a soldier.</em>  </p>
+<blockquote>
+<p>“我”回到驻地的第一个晚上<br>haunt这个词又出现了</p>
+</blockquote>
+</li>
+<li><p><em>I like the surprise of finding a letter in the mailbox and the anxious anticipation I feel when I’m getting ready to open it</em></p>
+</li>
+<li><p><em>I like the fact that I can lean against a tree and feel the breeae on my face when I see your words on paper.</em></p>
+</li>
+<li><p><em>I like to imagine the way you looked when you wrote it: what you were wearing, your surroundings, the way you held your pen</em></p>
+</li>
+<li><p><em>I know it’s a cliché and it’s probably off the mark, but I Keep thinking of you sitting in a tent at a makeshift table, with an oil lamp burning beside you while the wind blows outside. It’s so much more romantic than reading something on the same machine that you use to download music or research a paper.</em>  </p>
+<blockquote>
+<p>9-12，Savannah表达了她相比于email，更喜欢书信。<br>让我想起了高考前一直练习的作文主题：科技和人情的冲突，想起了一句cliché：从前慢~，想起了《傅雷家书》、《曾国藩家书》等等……的作文素材，以前没有读过，可能以后也没有机会去读，never before，never in the future</p>
+</blockquote>
+</li>
+<li><p><em>But with every new story, I’d get this sinking feeling, one that made me think that as much as we’d kept in touch, as much as we cared about each other, she’d somehow zigged while I had zagged.</em>  </p>
+<blockquote>
+<p>John再次休假，见到Savannah，即使他们一直保持联络，但是John依旧感觉他们都变了，Savannah搬进了她的新公寓，每天上课、当助教、听讲座、音乐会、聚会，生活十分充实；而John从会拆卸6种武器到会8种，仰卧推举又增加了三十磅</p>
+</blockquote>
+</li>
+<li><p><em>Do you know that I had to make excuses for you today? And how that made me feel? Here I was, singing your praises all year long, telling my friends what a nice guy you were, how mature you were, how proud I am of the job you’re doing. And they ended up seeing a side of you that even I’ve never seen before.</em>  </p>
+<blockquote>
+<p>John觉得Savannah和她的朋友们聚会太频繁了。自己为她在餐馆订好了座位，原本是惊喜，结果得知她和他的朋友们有约</p>
+</blockquote>
+</li>
+<li><p><em>They(love and caring) were the concrete bricks of our relationship, but unstable without the mortar of time spent together, time without the threat of imminent separation hanging over us.</em>  </p>
+<blockquote>
+<p>John结束休假，在飞机上所思</p>
+</blockquote>
+</li>
+<li><p><em>I watched the smoke billowing from the Twin Towers and the Pentagon and saw the grim faces of the men around me as they watched people jump to their deaths.</em>  </p>
+<blockquote>
+<p>9/11</p>
+</blockquote>
+</li>
+<li><p><em>Gone were long passages in which she described the way she envisioned our life together, passages that in the past had always filled me with anticipation.</em></p>
+</li>
+<li><p><em>As we were drifting apart, I was becoming more desperate to save what we once had shared; like a vicious circle, however, my desperation made us drift apart even further.</em></p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/09/EnglishWriting2/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-EnglishWriting1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/09/EnglishWriting1/">EnglishWriting(1)</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/09/EnglishWriting1/" class="archive-article-date">
+  	<time datetime="2020-04-08T16:03:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Select-30-English-sentences-from-English-literary-works"><a href="#Select-30-English-sentences-from-English-literary-works" class="headerlink" title="Select 30 English sentences from English literary works."></a>Select 30 English sentences from English literary works.</h2><ul>
+<li><p><em>Like all cities, Wilmington is rich in places and poor in others, and since my dad had one of the steadiest, solid citizen jobs on the planet——he drove a mail delivery route for the post office——we did okay.</em>  </p>
+<blockquote>
+<p>“我”出身在一个并不富裕但收入还算稳定的家庭</p>
+</blockquote>
+</li>
+<li><p><em>Instead, most of the kids who’d been good students headed off to the University of Carolina or North Carolina State, while the kids who hadn’t been good students stayed behind, bumming around from one lousy job to the next, drinking beer and hanging out, and pretty much avoid anything that might require a shred of responsibility.</em>  </p>
+<blockquote>
+<p>“我”因年少无知，对父亲收集硬币使家庭生活拮据感到不满，无法融入同学的圈子。高中毕业后浑浑噩噩、无所作为</p>
+</blockquote>
+</li>
+<li><p><em>The same crowd of losers was there, and I suddenly realized that I didn’t want to spend another pointless evening pretending that everything in my life was okay.</em>  </p>
+<blockquote>
+<p>在同一天之内，接到曾交往过几个月的女朋友的电话，得知她将要结婚，而“我”再一次被老板辞退，看到酒吧里的loser，第一次开始思考这一生应该做什么。</p>
+</blockquote>
+</li>
+<li><p>*”Thank you,” the brunette said, and when her eyes met mine, I felt something click, like a key turning in a lock.  </p>
+<blockquote>
+<p>“风陵渡口初相遇，一见杨过误终身”</p>
+</blockquote>
+</li>
+<li><p><em>Surfing is a solitary sport, one in which long stretches of boredom are interpersed with frantic activity, and it teaches you to flow with nature, instead of fighting it.</em>  </p>
+<blockquote>
+<p>“But I am a little disappointed that you forgot,”<br>“Forgot what?”<br>“Didn’t you say that you’d teach me how to surf?”</p>
+</blockquote>
+</li>
+<li><p>*”My dad always said that when you’re struggling with something, look at all the people around you and realize that every single person you see is struggling with something, and to them, it’s just as hard as what you’re going through.”*  </p>
+<blockquote>
+<p>女主向男主聊起了她的父亲</p>
+</blockquote>
+</li>
+<li><p><em>Time is relative. I know I’m not the first to realize it and far from the most famous, and my realization had nothing to do with energy or mass or the speed of light or anything else Einstein might have postulated.Rather, it had to do with the drag of hours while I waited for Savannah.</em>  </p>
+<blockquote>
+<p>在思念人的时候时间总是过得很慢</p>
+</blockquote>
+</li>
+<li><p><em>When a person sets a thing in motion, there’s a feeling of unease, almost regret, until you learn the truth.</em>  </p>
+<blockquote>
+<p>多年之后，男主回到女主的小镇，坐在山坡上眺望女主长大的牧场，心里清楚她不会知道他来过</p>
+</blockquote>
+</li>
+<li><p><em>On the trees surrounding me, the leaves are just beginning their slow turn towards the color of fire, glowing as the sun peeks over the horizon.</em>  </p>
+<blockquote>
+<p>清晨，美景衬佳人（佳人在下面的段落）</p>
+</blockquote>
+</li>
+<li><p><em>I could see the way his eyes gleamed as he gestured to a coin, pointing out the mint mark or how crisp the stamp had been or how the value of a coin might differ because it had arrows or wreaths.</em>  </p>
+<blockquote>
+<p>女主第一次来到男主家，和男主父亲聊了很多关于他收藏硬币的爱好。但是“我”仍然不理解父亲。</p>
+</blockquote>
+</li>
+<li><p><em>She had the rare ability to be exactly what people needed when she was with them and yet still remain true to herself</em>  </p>
+<blockquote>
+<p>让他人感到自在舒服，却不逢迎，无愧于心</p>
+</blockquote>
+</li>
+<li><p><em>She was a mountain girl, gifted and sweet, raised by attentive parents, with a desire to help those in need; I was a tattooed army grunt, hard aroud the edges, and largely a stranger in my own home</em>  </p>
+<blockquote>
+<p>男主觉得女主太完美，而自己却处于生活的边缘，两人差距过大。<br>只有努力学习，把自己变得更优秀才能遇见更好的另一半啊，加油加油！！！</p>
+</blockquote>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/09/EnglishWriting1/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-清明所思" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/04/05/%E6%B8%85%E6%98%8E%E6%89%80%E6%80%9D/">清明所思</a>
+    </h1>
+  
+
+        
+        <a href="/2020/04/05/%E6%B8%85%E6%98%8E%E6%89%80%E6%80%9D/" class="archive-article-date">
+  	<time datetime="2020-04-05T14:07:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>亲爱的陆文婷老师：<br>    现在又想和你谈心了，既然暂时没办法和你联络，那就把我的所思记录下来吧。<br>    仍记得你和我说的最后一句话是，不要复读，我现在要和你说，我确实没有复读。<br>    压线进了武汉理工大学，土木类，对于我这个分数也是一个好去处了。开学学校组织考试，我进了一个和中科院岩土所合作的班级。<br>    每年保研名额差不多13/35，但是只有前几名才可以自由选择学校，剩下的就是岩土所和本校。<br>    现在我想转计算机。噢，对了，我现在绩点是4.123/5，不是拔尖，但是也不会拖我的后腿，其中线性代数是满分<br>    现在是大一下学期，我选了好多课，高数、大物、概率论、普通化学、c语言等等等等，和高三的时候一样，上课感觉老师讲得一般般，可是课后自学的话还是要花很多时间，但是上课听了一遍基本没印象，不知道是我潜意识不想听老师讲课还是怎么回事<br>    我今天又看了一遍知乎上面名为“whut清北双offer”的一个帖子（第一次看是在暑假），看完以后意识到自己的时间不多了，大三结束的那个暑假就是夏令营的时间了。现在算算仅有两年时间了，毕竟开学就要大二了。不过，离我拿到保研，保到理想的学校又近了一步。<br>    如果那时候我觉得来学校看看你比较合适的话，那我就到学校和你聊聊天。要是保研还是失败的话，考研还是二战，不知道，争取一次上岸<br>    但是一定要保研啊。<br>    现在总是想一口气吃成一个大胖子，这个想学，那个想学。不过这样也好，每一天如果合理分配时间的话，会很充实<br>    两年零三个月，希望自己是在夏令营的宿舍里，认真准备面试，自信，不怯场，有实力。<br>    会的，加油<br>    我一直在心里对自己说：如果不能荣归故里，那么远走他乡将没有任何意义<br>    加油加油加油加油！！！！！<br>    立即推=&gt;复习到两点！！！！！！！冲冲冲！！！！</p>
+<hr>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/04/05/%E6%B8%85%E6%98%8E%E6%89%80%E6%80%9D/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-递归实现十进制转二进制" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
