@@ -187,11 +187,11 @@
 
 <meta name="generator" content="Hexo 4.2.0"></head>
 <body>
-    <div id="51344c56f2d048bf8e17077a4a434355" class="chart-container" style="width:900px; height:500px;"></div>
+    <div id="1005317b6ffb4072824fc3a72d782257" class="chart-container" style="width:900px; height:500px;"></div>
     <script>
-        var chart_51344c56f2d048bf8e17077a4a434355 = echarts.init(
-            document.getElementById('51344c56f2d048bf8e17077a4a434355'), 'white', {renderer: 'canvas'});
-        var option_51344c56f2d048bf8e17077a4a434355 = {
+        var chart_1005317b6ffb4072824fc3a72d782257 = echarts.init(
+            document.getElementById('1005317b6ffb4072824fc3a72d782257'), 'white', {renderer: 'canvas'});
+        var option_1005317b6ffb4072824fc3a72d782257 = {
     "baseOption": {
         "series": [
             {
@@ -250,12 +250,13 @@
         "timeline": {
             "axisType": "category",
             "orient": "horizontal",
-            "autoPlay": false,
+            "autoPlay": true,
             "controlPosition": "left",
             "loop": true,
             "rewind": false,
             "show": true,
             "inverse": false,
+            "playInterval": 1000,
             "bottom": "-5px",
             "data": [
                 "2002\u5e74",
@@ -1863,7 +1864,7 @@
         }
     ]
 };
-        chart_51344c56f2d048bf8e17077a4a434355.setOption(option_51344c56f2d048bf8e17077a4a434355);
+        chart_1005317b6ffb4072824fc3a72d782257.setOption(option_1005317b6ffb4072824fc3a72d782257);
     </script>
 </body>
 </html>
@@ -6683,10 +6684,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hide</a>
-              </li>
             
             <div class="clearfix"></div>
           </ul>
