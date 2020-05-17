@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>PythonDataAnalysis_report | CivilProgrammer&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Python数据分析与可视化实践前言“得半日之闲，可抵十年尘梦”一卷书，一壶茶，御六气，游无穷。自古以来，我国便有喜爱读书的传统 研究对象书籍、作家和出版社研究方式原始数据是多个excel表格形式，首先将其合并为一个csv格式的文件，再生成DataFrame格式的数据，主要利用pandas中的groupby进行分组分析研究意义近年来，在全球信息化的浪潮下，图书种类纷繁复杂，各种书籍良莠不齐。因此，">
+  <meta name="description" content="Python数据分析与可视化实践前言“得半日之闲，可抵十年尘梦”一卷书，一壶茶，御六气，游无穷。自古以来，我国便有喜爱读书的传统 研究对象书籍、作家和出版社">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PythonDataAnalysis_report">
 <meta property="og:url" content="http://yoursite.com/2020/05/11/PythonDataAnalysis-report/index.html">
 <meta property="og:site_name" content="CivilProgrammer&#39;s blog">
-<meta property="og:description" content="Python数据分析与可视化实践前言“得半日之闲，可抵十年尘梦”一卷书，一壶茶，御六气，游无穷。自古以来，我国便有喜爱读书的传统 研究对象书籍、作家和出版社研究方式原始数据是多个excel表格形式，首先将其合并为一个csv格式的文件，再生成DataFrame格式的数据，主要利用pandas中的groupby进行分组分析研究意义近年来，在全球信息化的浪潮下，图书种类纷繁复杂，各种书籍良莠不齐。因此，">
+<meta property="og:description" content="Python数据分析与可视化实践前言“得半日之闲，可抵十年尘梦”一卷书，一壶茶，御六气，游无穷。自古以来，我国便有喜爱读书的传统 研究对象书籍、作家和出版社">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/2020/05/11/PythonDataAnalysis-report/ProductiveAuthor_bar_and_line.png">
 <meta property="og:image" content="http://yoursite.com/2020/05/11/PythonDataAnalysis-report/Charts_backup/PriceRange_funnel.png">
@@ -21,7 +21,7 @@
 <meta property="og:image" content="http://yoursite.com/2020/05/11/PythonDataAnalysis-report/Charts_backup/TypicalPublishers_timeline_bar.png">
 <meta property="og:image" content="http://yoursite.com/2020/05/11/PythonDataAnalysis-report/Charts_backup/TypicalPublishers_timeline_pie.png">
 <meta property="article:published_time" content="2020-05-10T16:02:05.000Z">
-<meta property="article:modified_time" content="2020-05-10T16:33:31.754Z">
+<meta property="article:modified_time" content="2020-05-17T07:54:49.842Z">
 <meta property="article:author" content="CivilProgrammer">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://yoursite.com/2020/05/11/PythonDataAnalysis-report/ProductiveAuthor_bar_and_line.png">
@@ -185,7 +185,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Python数据分析与可视化实践"><a href="#Python数据分析与可视化实践" class="headerlink" title="Python数据分析与可视化实践"></a>Python数据分析与可视化实践</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>“得半日之闲，可抵十年尘梦”一卷书，一壶茶，御六气，游无穷。自古以来，我国便有喜爱读书的传统</p>
-<h3 id="研究对象"><a href="#研究对象" class="headerlink" title="研究对象"></a>研究对象</h3><pre><code>书籍、作家和出版社</code></pre><h3 id="研究方式"><a href="#研究方式" class="headerlink" title="研究方式"></a>研究方式</h3><pre><code>原始数据是多个excel表格形式，首先将其合并为一个csv格式的文件，再生成DataFrame格式的数据，主要利用pandas中的groupby进行分组分析</code></pre><h3 id="研究意义"><a href="#研究意义" class="headerlink" title="研究意义"></a>研究意义</h3><pre><code>近年来，在全球信息化的浪潮下，图书种类纷繁复杂，各种书籍良莠不齐。因此，对现在市面上的图书进行数据分析，了解各个作家和出版社的水平，是多而杂，还是少而精，亦或是既保证数量又保证质量，是具有实际意义的</code></pre><h3 id="图表种类"><a href="#图表种类" class="headerlink" title="图表种类"></a>图表种类</h3><pre><code>- 漏斗图：各价格区间的书籍数量
+<h3 id="研究对象"><a href="#研究对象" class="headerlink" title="研究对象"></a>研究对象</h3><pre><code>书籍、作家和出版社</code></pre><a id="more"></a>
+<h3 id="研究方式"><a href="#研究方式" class="headerlink" title="研究方式"></a>研究方式</h3><pre><code>原始数据是多个excel表格形式，首先将其合并为一个csv格式的文件，再生成DataFrame格式的数据，主要利用pandas中的groupby进行分组分析</code></pre><h3 id="研究意义"><a href="#研究意义" class="headerlink" title="研究意义"></a>研究意义</h3><pre><code>近年来，在全球信息化的浪潮下，图书种类纷繁复杂，各种书籍良莠不齐。因此，对现在市面上的图书进行数据分析，了解各个作家和出版社的水平，是多而杂，还是少而精，亦或是既保证数量又保证质量，是具有实际意义的</code></pre><h3 id="图表种类"><a href="#图表种类" class="headerlink" title="图表种类"></a>图表种类</h3><pre><code>- 漏斗图：各价格区间的书籍数量
 - 柱状图和折线图：高产作家前20的作品数量和平均评分
 - 雷达图：高产出版社前10的平均评分、出版数量、平均价格
 - 柱状图（时间轴）：文学领域和科技领域具有代表性的出版社每年的出版数量和平均评分
@@ -305,13 +306,13 @@
                   <div class="reward-box">
                     
                     <div class="reward-box-item">
-                      <img class="reward-img" src="img/alipay.jpg">
+                      <img class="reward-img" src="/img/alipay.jpg">
                       <span class="reward-type">支付宝</span>
                     </div>
                     
                     
                     <div class="reward-box-item">
-                      <img class="reward-img" src="img/weixin.png">
+                      <img class="reward-img" src="/img/weixin.png">
                       <span class="reward-type">微信</span>
                     </div>
                     
